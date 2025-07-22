@@ -24,21 +24,21 @@ A proof-of-concept web application that provides a unified view of transport jou
 ## 🏃‍♂️ Getting Started
 
 1. **Install dependencies**:
-   \`\`\`bash
+   ```bash
    pnpm install
-   \`\`\`
+   ```
 
 2. **Run the development server**:
-   \`\`\`bash
+   ```bash
    pnpm dev
-   \`\`\`
+   ```
 
 3. **Open your browser**:
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 app/
 ├── page.tsx                         # Landing page with demo accounts
 ├── setup/page.tsx                   # Provider connection (single step)
@@ -61,7 +61,7 @@ lib/
 ├── demo-data.ts                    # Mock accounts and providers
 ├── storage.ts                      # LocalStorage utilities
 └── utils.ts                        # Utility functions
-\`\`\`
+```
 
 
 ## 👥 Demo Accounts
