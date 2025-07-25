@@ -10,7 +10,7 @@ import { ErrorBanner } from "@/components/error-banner"
 import { fetchMultipleMonths } from "@/lib/api-client"
 import { loadCurrentAccount } from "@/lib/storage"
 import type { Journey, Purchase } from "@/lib/types"
-import { formatCurrency, getModeIcon, calculateMonthlyStats, getDateRanges } from "@/lib/utils"
+import { formatCurrency, getModeIcon, calculateMonthlyStats, getDateRanges, formatOperatorName } from "@/lib/utils"
 import JourneysPage from "./journeys/page"
 import { DEMO_ACCOUNTS } from "@/lib/demo-data"
 import { Route, CreditCard, Building2, Leaf, TrendingUp, ArrowRight, Calendar } from "lucide-react"
@@ -135,7 +135,7 @@ export default function DashboardPage() {
         />
         <StatCard
           title="Top Operator"
-          value={currentMonthStats.topOperator}
+          value={formatOperatorName(currentMonthStats.topOperator)}
           change="Most frequent"
           trend="neutral"
           icon={<Building2 className="h-4 w-4" />}
@@ -193,7 +193,9 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Total distance</span>
                 <span className="text-sm">
-                  {journeys.reduce((sum, j) => sum + (typeof j?.distance_km === "number" ? j.distance_km : 0), 0)}km
+                  {Intl.NumberFormat("en-GB", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(
+                    journeys.reduce((sum, j) => sum + (typeof j?.distance_km === "number" ? j.distance_km : 0), 0)
+                  )}km
                 </span>
               </div>
               <div className="flex items-center justify-between">

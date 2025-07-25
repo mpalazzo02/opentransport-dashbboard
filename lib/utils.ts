@@ -1,3 +1,10 @@
+// Format snake_case or id to Capitalized Words
+export function formatOperatorName(str: string): string {
+  if (!str) return "Unknown";
+  return str
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import type { Journey, Purchase, MonthlyStats } from "./types"

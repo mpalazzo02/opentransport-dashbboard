@@ -32,7 +32,7 @@ import { ErrorBanner } from "@/components/error-banner"
 import { fetchMultipleMonths } from "@/lib/api-client"
 import { loadCurrentAccount } from "@/lib/storage"
 import type { Journey } from "@/lib/types"
-import { formatDate, getModeIcon, getModeColor, capitalizeFirst, getDateRanges, exportToCSV } from "@/lib/utils"
+import { formatDate, getModeIcon, getModeColor, capitalizeFirst, getDateRanges, exportToCSV, formatOperatorName } from "@/lib/utils"
 import { DEMO_ACCOUNTS } from "@/lib/demo-data"
 import { ArrowUpDown, Download, Eye, Search, ChevronDown, HelpCircle } from "lucide-react"
 
@@ -145,7 +145,7 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
         }
         return (
           <Badge variant="outline" className="text-xs">
-            {operatorName}
+            {formatOperatorName(operatorName)}
           </Badge>
         );
       },
@@ -281,7 +281,7 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Journeys</h1>
-          <p className="text-gray-600 mt-1">View and analyze your transport journeys</p>
+          <p className="text-gray-600 mt-1">View and analyse your transport journeys</p>
         </div>
         <Button onClick={handleExportCSV} variant="outline">
           <Download className="mr-2 h-4 w-4" />

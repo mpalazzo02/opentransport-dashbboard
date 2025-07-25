@@ -39,6 +39,7 @@ import {
   capitalizeFirst,
   getDateRanges,
   exportToCSV,
+  formatOperatorName,
 } from "@/lib/utils"
 import { DEMO_ACCOUNTS } from "@/lib/demo-data"
 import { ArrowUpDown, Download, Eye, Search, ChevronDown } from "lucide-react"
@@ -130,12 +131,12 @@ export default function TransactionsPage() {
         cell: ({ row }) => {
           const operator = row.original.operator
           const name = operator?.name || operator?.id || "Unknown"
-          return <Badge variant="outline">{name}</Badge>
+          return <Badge variant="outline">{formatOperatorName(name)}</Badge>
         },
         filterFn: (row, id, value) => {
           const operator = row.original.operator
           const name = operator?.name || operator?.id || "Unknown"
-          return name.toLowerCase().includes(value.toLowerCase())
+          return formatOperatorName(name).toLowerCase().includes(value.toLowerCase())
         },
       },
       {
