@@ -44,7 +44,7 @@ export default function HomePage() {
 					{/* Main Headline */}
 					<div className="flex items-center justify-center gap-6 mb-6 animate-fade-in-up">
 					<Image
-						src="/Group 2 1.svg"
+						src="/ot-logo-natural.svg"
 						alt="Open Transport Logo"
 						width={130}
 						height={96}
@@ -250,7 +250,7 @@ export default function HomePage() {
 					<div className="flex flex-col md:flex-row items-center justify-between">
 					<div className="flex items-center space-x-3 mb-6 md:mb-0">
 						<Image
-							src="/Group 2.svg"
+							src="/ot-logo-white.svg"
 							alt="Open Transport Logo"
 							width={36}
 							height={28}
