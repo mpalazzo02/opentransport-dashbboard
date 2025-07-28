@@ -37,7 +37,7 @@ export default function AccountsPage() {
     if (savedProviders.length > 0) {
       setProviders(savedProviders)
     } else {
-      // Initialize with default providers
+      // Initialise with default providers
       setProviders(TRANSPORT_PROVIDERS)
     }
   }, [router])
@@ -49,7 +49,9 @@ export default function AccountsPage() {
 
     // Update provider status
     const updatedProviders = providers.map((p) =>
-      p.id === providerId ? { ...p, connected, status: connected ? "fetching" : ("idle" as const) } : p,
+      p.id === providerId
+        ? { ...p, connected, status: connected ? "fetching" as const : "idle" as const }
+        : p
     )
     setProviders(updatedProviders)
 
@@ -154,8 +156,8 @@ export default function AccountsPage() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="h-12 w-12 rounded-full bg-openTransport-primary/10 flex items-center justify-center">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-full bg-openTransport-primary/10 flex items-center justify-center self-center">
                 <span className="text-openTransport-primary font-semibold">
                   {selectedAccount.name
                     .split(" ")
@@ -163,12 +165,22 @@ export default function AccountsPage() {
                     .join("")}
                 </span>
               </div>
-              <div>
+              <div className="flex flex-col justify-center">
                 <h3 className="font-semibold">{selectedAccount.name}</h3>
                 <p className="text-sm text-gray-600">{selectedAccount.description}</p>
-                <code className="text-xs bg-gray-100 px-2 py-1 rounded mt-1 inline-block font-mono">
-                  {selectedAccount.account_id}
-                </code>
+                <div className="mt-4">
+                  <div className="bg-blue-50 border border-blue-200 rounded px-3 py-2 flex items-center gap-2">
+                    <span className="text-xs text-blue-700 font-medium">Coming Soon:</span>
+                    <span className="text-xs text-gray-700">Personalise your carbon calculations by selecting your car.</span>
+                  </div>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-xs text-gray-500">Assumed car for carbon calculations:</span>
+                    <Badge variant="secondary">Ford Fiesta</Badge>
+                    <Button variant="outline" size="sm" disabled className="opacity-60 pointer-events-none ml-2 font-semibold bg-muted border-muted text-muted-foreground">
+                      Change Car (Coming Soon)
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
             <Button variant="outline" onClick={() => router.push("/")}>
@@ -265,7 +277,7 @@ export default function AccountsPage() {
       {/* Data Sync Status */}
       <Card>
         <CardHeader>
-          <CardTitle>Data Synchronization</CardTitle>
+          <CardTitle>Data Synchronisation</CardTitle>
           <CardDescription>Last sync status and data freshness information</CardDescription>
         </CardHeader>
         <CardContent>
