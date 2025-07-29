@@ -40,16 +40,21 @@ export default function HomePage() {
 				{/* Hero Content */}
 				<div className="relative z-10 container mx-auto px-4 text-center">
 					{/* Logo */}
-					<div className="flex items-center justify-center mb-8 animate-fade-in">
-						<div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white/20">
-							<Train className="h-12 w-12 text-openTransport-primary" />
-						</div>
-					</div>
 
 					{/* Main Headline */}
-					<h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-openTransport-neutral mb-6 animate-fade-in-up">
-						Open Transport
-					</h1>
+					<div className="flex items-center justify-center gap-6 mb-6 animate-fade-in-up">
+					<Image
+						src="/ot-logo-natural.svg"
+						alt="Open Transport Logo"
+						width={130}
+						height={96}
+						className="h-12 w-auto md:h-16 lg:h-20"
+						priority
+					/>
+						<span className="text-6xl md:text-7xl lg:text-8xl font-bold text-openTransport-neutral">
+							Open Transport
+						</span>
+					</div>
 
 					{/* Subheading */}
 					<h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-700 mb-4 animate-fade-in-up animation-delay-200">
@@ -85,7 +90,7 @@ export default function HomePage() {
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-fade-in-up animation-delay-800">
 						{[
 							{ icon: MapPin, title: "Track all journeys", desc: "Every transport mode" },
-							{ icon: BarChart3, title: "Analyze spending", desc: "Detailed insights" },
+							{ icon: BarChart3, title: "Analyse spending", desc: "Detailed insights" },
 							{ icon: Train, title: "Multiple providers", desc: "All in one place" },
 							{ icon: Leaf, title: "CO₂ Impact", desc: "Environmental tracking" },
 						].map((feature, index) => (
@@ -243,12 +248,17 @@ export default function HomePage() {
 			<footer className="bg-openTransport-neutral text-white py-12">
 				<div className="container mx-auto px-4">
 					<div className="flex flex-col md:flex-row items-center justify-between">
-						<div className="flex items-center space-x-3 mb-6 md:mb-0">
-							<div className="bg-white/10 p-2 rounded-lg">
-								<Train className="h-6 w-6" />
-							</div>
-							<span className="text-xl font-bold">Open Transport</span>
-						</div>
+					<div className="flex items-center space-x-3 mb-6 md:mb-0">
+						<Image
+							src="/ot-logo-white.svg"
+							alt="Open Transport Logo"
+							width={36}
+							height={28}
+							className="h-7 w-auto md:h-8 lg:h-9"
+							priority={false}
+						/>
+						<span className="text-xl font-bold">Open Transport</span>
+					</div>
 
 						<div className="flex items-center space-x-6">
 							<Link
@@ -276,52 +286,52 @@ export default function HomePage() {
 					</div>
 
 					<div className="border-t border-white/10 mt-8 pt-8 text-center text-gray-400 text-sm">
-						<p>© 2024 Open Transport. Built with Next.js 15, TypeScript, and Tailwind CSS.</p>
+						<p>© 2025 Open Transport. All rights reserved.</p>
 					</div>
 				</div>
 			</footer>
 
 			<style jsx>{`
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
+		@keyframes fade-in {
+		  from { opacity: 0; }
+		  to { opacity: 1; }
+		}
 
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+		@keyframes fade-in-up {
+		  from {
+			opacity: 0;
+			transform: translateY(30px);
+		  }
+		  to {
+			opacity: 1;
+			transform: translateY(0);
+		  }
+		}
 
-        .animate-fade-in {
-          animation: fade-in 1s ease-out;
-        }
+		.animate-fade-in {
+		  animation: fade-in 1s ease-out;
+		}
 
-        .animate-fade-in-up {
-          animation: fade-in-up 1s ease-out;
-        }
+		.animate-fade-in-up {
+		  animation: fade-in-up 1s ease-out;
+		}
 
-        .animation-delay-200 {
-          animation-delay: 200ms;
-        }
+		.animation-delay-200 {
+		  animation-delay: 200ms;
+		}
 
-        .animation-delay-400 {
-          animation-delay: 400ms;
-        }
+		.animation-delay-400 {
+		  animation-delay: 400ms;
+		}
 
-        .animation-delay-600 {
-          animation-delay: 600ms;
-        }
+		.animation-delay-600 {
+		  animation-delay: 600ms;
+		}
 
-        .animation-delay-800 {
-          animation-delay: 800ms;
-        }
-      `}</style>
+		.animation-delay-800 {
+		  animation-delay: 800ms;
+		}
+	  `}</style>
 		</div>
 	)
 }

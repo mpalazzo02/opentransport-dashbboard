@@ -102,9 +102,9 @@ export function DebugPanel({ data = {}, className }: DebugPanelProps) {
                     {data.journeys?.slice(0, 5).map((journey: any, i: number) => (
                       <div key={i} className="text-xs bg-muted p-2 rounded">
                         <div>
-                          {journey.mode_ref} - {journey.travel_date}
+                          {journey.mode?.id ?? "-"} - {journey.travel_date}
                         </div>
-                        <div className="text-muted-foreground">ID: {journey.transaction_id}</div>
+                        <div className="text-muted-foreground">ID: {journey.id}</div>
                       </div>
                     )) || <div className="text-xs text-muted-foreground">No journeys</div>}
                   </div>
