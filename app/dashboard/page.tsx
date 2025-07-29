@@ -15,6 +15,7 @@ import JourneysPage from "./journeys/page"
 import { DEMO_ACCOUNTS } from "@/lib/demo-data"
 import { Route, CreditCard, Building2, Leaf, TrendingUp, ArrowRight, Calendar } from "lucide-react"
 import Link from "next/link"
+import { FeaturedJourneyMap } from "@/components/featured-journey-map"
 
 export default function DashboardPage() {
   const [currentAccount, setCurrentAccount] = useState<string | null>(null)
@@ -75,6 +76,17 @@ export default function DashboardPage() {
       })
       .slice(0, 5)
   }, [journeys])
+
+  // Find the most recent journey with a polyline
+  const featuredJourney = useMemo(() => {
+    return journeys
+      .filter(j => !!j.polyline && Array.isArray(j.polyline) === false)
+      .sort((a, b) => {
+        const aDate = a?.travel_date ? new Date(a.travel_date).getTime() : 0;
+        const bDate = b?.travel_date ? new Date(b.travel_date).getTime() : 0;
+        return bDate - aDate;
+      })[0] || null;
+  }, [journeys]);
 
   if (!selectedAccount) {
     return (
@@ -152,70 +164,92 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Recent Journeys */}
-        {/* Recent Journeys */}
         {/* Recent Journeys Table (with operator lookup) */}
         <div>
           <JourneysPage purchases={purchases} />
         </div>
 
         {/* Quick Stats */}
-        <Card>
-          <CardHeader>
-            <CardTitle>This Month's Summary</CardTitle>
-            <CardDescription>Key metrics at a glance</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Average journey cost</span>
-                <span className="text-sm">
-                  {currentMonthStats.journeys > 0
-                    ? formatCurrency(currentMonthStats.totalSpend / currentMonthStats.journeys)
-                    : "—"}
-                </span>
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>This Month's Summary</CardTitle>
+              <CardDescription>Key metrics at a glance</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Average journey cost</span>
+                  <span className="text-sm">
+                    {currentMonthStats.journeys > 0
+                      ? formatCurrency(currentMonthStats.totalSpend / currentMonthStats.journeys)
+                      : "—"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Most used transport</span>
+                  <Badge variant="secondary" className="capitalize">
+                    {journeys.length > 0
+                      ? (() => {
+                          const modeCounts = journeys.reduce((acc, j) => {
+                            const mode = j?.mode?.id ?? "unknown";
+                            acc[mode] = (acc[mode] || 0) + 1;
+                            return acc;
+                          }, {} as Record<string, number>);
+                          const top = Object.entries(modeCounts).reduce((a, b) => (a[1] > b[1] ? a : b), ["—", 0]);
+                          return top[0];
+                        })()
+                      : "—"}
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Total distance</span>
+                  <span className="text-sm">
+                    {Intl.NumberFormat("en-GB", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(
+                      journeys.reduce((sum, j) => sum + (typeof j?.distance_km === "number" ? j.distance_km : 0), 0)
+                    )}km
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Data coverage</span>
+                  <Badge variant="outline" className="text-xs">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    Last 3 months
+                  </Badge>
+                </div>
+                <div className="pt-4">
+                  <Button className="w-full" asChild>
+                    <Link href="/dashboard/transactions">
+                      <TrendingUp className="mr-2 h-4 w-4" />
+                      View Detailed Analytics
+                    </Link>
+                  </Button>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Most used transport</span>
-                <Badge variant="secondary" className="capitalize">
-                  {journeys.length > 0
-                    ? (() => {
-                        const modeCounts = journeys.reduce((acc, j) => {
-                          const mode = j?.mode?.id ?? "unknown";
-                          acc[mode] = (acc[mode] || 0) + 1;
-                          return acc;
-                        }, {} as Record<string, number>);
-                        const top = Object.entries(modeCounts).reduce((a, b) => (a[1] > b[1] ? a : b), ["—", 0]);
-                        return top[0];
-                      })()
-                    : "—"}
-                </Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Total distance</span>
-                <span className="text-sm">
-                  {Intl.NumberFormat("en-GB", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(
-                    journeys.reduce((sum, j) => sum + (typeof j?.distance_km === "number" ? j.distance_km : 0), 0)
-                  )}km
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Data coverage</span>
-                <Badge variant="outline" className="text-xs">
-                  <Calendar className="h-3 w-3 mr-1" />
-                  Last 3 months
-                </Badge>
-              </div>
-              <div className="pt-4">
-                <Button className="w-full" asChild>
-                  <Link href="/dashboard/transactions">
-                    <TrendingUp className="mr-2 h-4 w-4" />
-                    View Detailed Analytics
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+
+          {/* Featured Journey Map Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Featured Journey</CardTitle>
+              <CardDescription>Route preview for your most recent journey</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {featuredJourney ? (
+                <FeaturedJourneyMap
+                  polyline={featuredJourney.polyline as string | null}
+                  center={{
+                    lat: featuredJourney["travel-from"].location["lat-long"].latitude ?? 51.5,
+                    lng: featuredJourney["travel-from"].location["lat-long"].longitude ?? -0.12,
+                  }}
+                />
+              ) : (
+                <div className="h-[300px] flex items-center justify-center text-muted-foreground">No journey to display</div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Debug Panel (dev mode only) */}
