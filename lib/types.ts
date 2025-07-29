@@ -1,13 +1,58 @@
 // API Models
 export type Journey = {
-  transaction_id: string | number | null
-  account_id: string | null
-  mode_ref: string | null
-  distance_km: number | "unknown" | null
-  co2_g: number | "unknown" | null
-  travel_date: string | null // YYYY-MM-DD
-  // Additional fields from new API (optional, for future-proofing)
-  [k: string]: any
+  account_id: string;
+  id: string | number;
+  mode: {
+    id: string;
+    "short-desc": string | null;
+    "long-desc": string | null;
+  };
+  operator: {
+    id: string;
+    name: string;
+  };
+  "travel-from": {
+    location: {
+      "lat-long": {
+        latitude: number | null;
+        longitude: number | null;
+      };
+      NaPTAN: string | null;
+    };
+    "date-time": string | null;
+    reference: string | null;
+  };
+  "travel-to": {
+    location: {
+      "lat-long": {
+        latitude: number | null;
+        longitude: number | null;
+      };
+      NaPTAN: string | null;
+    };
+    "date-time": string | null;
+    reference: string | null;
+  };
+  ticket: {
+    "number-usages": number | null;
+    reference: string | null;
+    "reference-type": string | null;
+    medium: string | null;
+    code1: string | null;
+    code2: string | null;
+    code3: string | null;
+  };
+  price: {
+    amount: number | null;
+    currency: string | null;
+  };
+  "route-via-avoid": string | null;
+  "pre-paid": string | null;
+  services: any[];
+  distance_km: number | "unknown" | null;
+  co2_g: number | "unknown" | null;
+  polyline: string | null;
+  travel_date: string;
 }
 
 export type Purchase = {

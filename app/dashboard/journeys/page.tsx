@@ -93,10 +93,10 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
     const filteredData = table.getFilteredRowModel().rows.map((row) => row.original)
     exportToCSV(filteredData, `journeys-${new Date().toISOString().split("T")[0]}.csv`, [
       { key: "travel_date", label: "Date" },
-      { key: "mode_ref", label: "Mode" },
+      { key: "mode.id", label: "Mode" },
       { key: "distance_km", label: "Distance (km)" },
       { key: "co2_g", label: "CO₂ (g)" },
-      { key: "transaction_id", label: "Transaction ID" },
+      { key: "id", label: "Journey ID" },
     ])
   }
 
@@ -115,11 +115,11 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
       },
     },
     {
-      accessorKey: "mode_ref",
+      id: "mode",
       header: "Mode",
       cell: ({ row }) => {
-        const mode = row.getValue("mode_ref");
-        if (typeof mode !== "string") return "—";
+        const journey = row.original;
+        const mode = journey.mode?.id ?? "unknown";
         return (
           <div className="flex items-center space-x-2">
             <span>{getModeIcon(mode)}</span>
@@ -128,7 +128,8 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
         );
       },
       filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
+        const journey = row.original;
+        return value.includes(journey.mode?.id ?? "unknown");
       },
     },
     {
@@ -136,17 +137,25 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
       header: "Operator",
       cell: ({ row }) => {
         const journey = row.original;
-        let operatorName = "Unknown";
-        if (journey.transaction_id && purchases) {
-          const purchase = purchases.find((p) => p.transaction_id === journey.transaction_id || p.id === journey.transaction_id);
-          if (purchase && purchase.operator) {
-            operatorName = purchase.operator.name || purchase.operator.id || "Unknown";
-          }
-        }
+        const operatorName = journey.operator?.name || journey.operator?.id || "Unknown";
         return (
-          <Badge variant="outline" className="text-xs">
-            {formatOperatorName(operatorName)}
-          </Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge
+                  variant="outline"
+                  className="text-xs max-w-[140px] truncate inline-block align-middle cursor-pointer"
+                  style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                  title={operatorName}
+                >
+                  {formatOperatorName(operatorName)}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                {operatorName}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         );
       },
     },
@@ -211,10 +220,10 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
       },
     },
     {
-      accessorKey: "transaction_id",
-      header: "Transaction ID",
+      accessorKey: "id",
+      header: "Journey ID",
       cell: ({ row }) => {
-        const id = row.getValue("transaction_id");
+        const id = row.getValue("id");
         return id != null ? (
           <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">{String(id)}</code>
         ) : "—";
@@ -308,8 +317,8 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search mode..."
-                value={(table.getColumn("mode_ref")?.getFilterValue() as string) ?? ""}
-                onChange={(event) => table.getColumn("mode_ref")?.setFilterValue(event.target.value)}
+                value={(table.getColumn("mode")?.getFilterValue() as string) ?? ""}
+                onChange={(event) => table.getColumn("mode")?.setFilterValue(event.target.value)}
                 className="pl-8"
               />
             </div>
@@ -422,9 +431,9 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
                 <div>
                   <label className="text-sm font-medium text-gray-500">Mode</label>
                   <div className="flex items-center space-x-2 mt-1">
-                    <span>{getModeIcon(selectedJourney.mode_ref ?? "")}</span>
-                    <Badge className={getModeColor(selectedJourney.mode_ref ?? "")}>
-                      {capitalizeFirst(selectedJourney.mode_ref ?? "")}
+                    <span>{getModeIcon(selectedJourney.mode?.id ?? "")}</span>
+                    <Badge className={getModeColor(selectedJourney.mode?.id ?? "")}>
+                      {capitalizeFirst(selectedJourney.mode?.id ?? "")}
                     </Badge>
                   </div>
                 </div>
@@ -449,9 +458,9 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
                   </p>
                 </div>
                 <div className="col-span-2">
-                  <label className="text-sm font-medium text-gray-500">Transaction ID</label>
+                  <label className="text-sm font-medium text-gray-500">Journey ID</label>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded block mt-1 font-mono">
-                    {selectedJourney.transaction_id}
+                    {selectedJourney.id}
                   </code>
                 </div>
                 <div className="col-span-2">

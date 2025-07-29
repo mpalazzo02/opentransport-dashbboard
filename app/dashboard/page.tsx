@@ -180,7 +180,7 @@ export default function DashboardPage() {
                   {journeys.length > 0
                     ? (() => {
                         const modeCounts = journeys.reduce((acc, j) => {
-                          const mode = j?.mode_ref ?? "unknown";
+                          const mode = j?.mode?.id ?? "unknown";
                           acc[mode] = (acc[mode] || 0) + 1;
                           return acc;
                         }, {} as Record<string, number>);
