@@ -58,10 +58,10 @@ export function ProviderCard({ provider, onToggle, className }: ProviderCardProp
 								Failed
 							</div>
 						) : provider.connected ? (
-							<div className="flex items-center px-3 py-1 bg-openTransport-accent/10 text-openTransport-accent rounded text-xs font-medium">
-								<CheckCircle className="h-4 w-4 mr-1" />
-								Connected
-							</div>
+						<div className="flex items-center px-3 py-1 bg-green-700 text-white rounded text-xs font-medium">
+							<CheckCircle className="h-4 w-4 mr-1 text-white" />
+							Connected
+						</div>
 						) : (
 							<div className="px-3 py-1 bg-openTransport-primary text-white rounded text-xs font-medium hover:bg-openTransport-primary/90 transition-colors">
 								Connect

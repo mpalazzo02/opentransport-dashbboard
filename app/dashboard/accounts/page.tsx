@@ -157,8 +157,8 @@ export default function AccountsPage() {
         <CardContent>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 rounded-full bg-openTransport-primary/10 flex items-center justify-center self-center">
-                <span className="text-openTransport-primary font-semibold">
+              <div className="h-12 w-12 rounded-full bg-white flex items-center justify-center self-center border border-openTransport-primary/30">
+                <span className="text-[#002d9c] font-semibold">
                   {selectedAccount.name
                     .split(" ")
                     .map((n) => n[0])
@@ -166,7 +166,7 @@ export default function AccountsPage() {
                 </span>
               </div>
               <div className="flex flex-col justify-center">
-                <h3 className="font-semibold">{selectedAccount.name}</h3>
+                <h2 className="font-semibold">{selectedAccount.name}</h2>
                 <p className="text-sm text-gray-600">{selectedAccount.description}</p>
                 <div className="mt-4">
                   <div className="bg-blue-50 border border-blue-200 rounded px-3 py-2 flex items-center gap-2">
@@ -175,7 +175,7 @@ export default function AccountsPage() {
                   </div>
                   <div className="mt-2 flex items-center gap-2">
                     <span className="text-xs text-gray-500">Assumed car for carbon calculations:</span>
-                    <Badge variant="secondary">Ford Fiesta</Badge>
+                  <Badge className="bg-[#002d9c] text-white">Ford Fiesta</Badge>
                     <Button variant="outline" size="sm" disabled className="opacity-60 pointer-events-none ml-2 font-semibold bg-muted border-muted text-muted-foreground">
                       Change Car (Coming Soon)
                     </Button>
@@ -195,7 +195,7 @@ export default function AccountsPage() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900">Connected Providers ({connectedProviders.length})</h2>
           <div className="flex items-center space-x-2">
-            <Badge variant="secondary" className="flex items-center space-x-1">
+            <Badge className="bg-[#002d9c] text-white flex items-center space-x-1">
               <CheckCircle className="h-3 w-3" />
               <span>Active</span>
             </Badge>
@@ -284,7 +284,7 @@ export default function AccountsPage() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Connected providers</span>
-              <Badge variant="secondary">{connectedProviders.length}</Badge>
+            <Badge className="bg-[#002d9c] text-white">{connectedProviders.length}</Badge>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Last sync</span>
@@ -294,11 +294,11 @@ export default function AccountsPage() {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Data coverage</span>
-              <Badge variant="secondary">Last 3 months</Badge>
+            <Badge className="bg-[#002d9c] text-white">Last 3 months</Badge>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Sync status</span>
-              <Badge variant={connectedProviders.some((p) => p.status === "error") ? "destructive" : "secondary"}>
+            <Badge className={connectedProviders.some((p) => p.status === "error") ? "bg-red-700 text-white" : "bg-[#002d9c] text-white"}>
                 {connectedProviders.some((p) => p.status === "fetching")
                   ? "Syncing..."
                   : connectedProviders.some((p) => p.status === "error")
