@@ -60,7 +60,7 @@ export default function DashboardLayout({
         <div className="bg-openTransport-primary/10 p-2 rounded-lg">
           <Train className="h-5 w-5 text-openTransport-primary" />
         </div>
-        <span className="font-bold text-lg text-openTransport-neutral">Open Transport</span>
+        <span className="font-bold text-lg text-openTransport-neutral" aria-hidden="true">Open Transport</span>
       </div>
 
       {/* Navigation */}
@@ -192,7 +192,10 @@ export default function DashboardLayout({
           </header>
 
           {/* Page Content */}
-          <main className="flex-1 p-4 md:p-6">{children}</main>
+          <main className="flex-1 p-4 md:p-6">
+            <h1 className="sr-only">Open Transport Dashboard</h1>
+            {children}
+          </main>
         </div>
       </div>
     </div>

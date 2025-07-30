@@ -231,6 +231,9 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
     },
     {
       id: "actions",
+      header: () => (
+        <span className="sr-only">Actions</span>
+      ),
       cell: ({ row }) => (
         <Button
           variant="ghost"
