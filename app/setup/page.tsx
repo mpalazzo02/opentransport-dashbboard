@@ -99,39 +99,40 @@ export default function SetupPage() {
 
   if (!selectedAccount) {
     return (
-      <div className="min-h-screen bg-openTransport-background flex items-center justify-center">
+      <main className="min-h-screen bg-openTransport-background flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
           <p>Loading account...</p>
         </div>
-      </div>
+      </main>
     )
   }
 
   if (isComplete) {
     return (
-      <div className="min-h-screen bg-openTransport-background flex items-center justify-center">
+      <main className="min-h-screen bg-openTransport-background flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="text-center py-12">
             <CheckCircle className="h-16 w-16 text-openTransport-accent mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Setup Complete!</h3>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Setup Complete!</h2>
             <p className="text-gray-600 mb-4">Your transport data has been imported. Redirecting to dashboard...</p>
             <div className="flex justify-center">
               <Loader2 className="h-5 w-5 animate-spin" />
             </div>
           </CardContent>
         </Card>
-      </div>
+      </main>
     )
   }
 
   return (
-    <div className="min-h-screen bg-openTransport-background">
+    <main className="min-h-screen bg-openTransport-background">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
+              <h1 className="sr-only">Setup: Connect Your Providers</h1>
               <Link
                 href="/"
                 className="flex items-center text-sm text-gray-600 hover:text-gray-900 mb-3 transition-colors"
@@ -139,7 +140,7 @@ export default function SetupPage() {
                 <ArrowLeft className="h-4 w-4 mr-1" />
                 Back to accounts
               </Link>
-              <h1 className="text-3xl font-bold text-gray-900">Connect Your Providers</h1>
+              <h2 className="text-3xl font-bold text-gray-900">Connect Your Providers</h2>
               <p className="text-gray-600 mt-1">
                 Welcome, <span className="font-medium">{selectedAccount.name}</span>. Choose which transport providers
                 to connect.
@@ -153,7 +154,7 @@ export default function SetupPage() {
           {/* Main Content */}
           <Card>
             <CardHeader>
-              <CardTitle>Transport Providers</CardTitle>
+              <h3 className="text-xl font-semibold text-gray-900">Transport Providers</h3>
               <CardDescription>
                 Select providers to import your journey data. Data will be fetched immediately upon connection.
               </CardDescription>
@@ -212,6 +213,6 @@ export default function SetupPage() {
           </Card>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
