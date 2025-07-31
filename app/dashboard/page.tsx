@@ -10,7 +10,13 @@ import { ErrorBanner } from "@/components/error-banner"
 import { fetchMultipleMonths } from "@/lib/api-client"
 import { loadCurrentAccount } from "@/lib/storage"
 import type { Journey, Purchase } from "@/lib/types"
-import { formatCurrency, getModeIcon, calculateMonthlyStats, getDateRanges, formatOperatorName } from "@/lib/utils"
+import {
+  formatCurrency,
+  getModeIcon,
+  calculateMonthlyStats,
+  getDateRanges,
+  formatOperatorName,
+} from "@/lib/utils"
 import JourneysPage from "./journeys/page"
 import { DEMO_ACCOUNTS } from "@/lib/demo-data"
 import { Route, CreditCard, Building2, Leaf, TrendingUp, ArrowRight, Calendar } from "lucide-react"
@@ -41,8 +47,14 @@ export default function DashboardPage() {
         setError(null)
 
         // Fetch all months of 2023 for demo data
-        const dateRanges = Array.from({ length: 12 }, (_, i) => ({ year: '2023', month: String(i + 1).padStart(2, '0') }))
-        const { journeys: journeyData, purchases: purchaseData } = await fetchMultipleMonths(currentAccount, dateRanges)
+        const dateRanges = Array.from({ length: 12 }, (_, i) => ({
+          year: "2023",
+          month: String(i + 1).padStart(2, "0"),
+        }))
+        const { journeys: journeyData, purchases: purchaseData } = await fetchMultipleMonths(
+          currentAccount,
+          dateRanges
+        )
 
         setJourneys(journeyData)
         setPurchases(purchaseData)
@@ -67,11 +79,11 @@ export default function DashboardPage() {
   // Recent journeys for quick view
   const recentJourneys = useMemo(() => {
     return journeys
-      .filter(j => !!j && !!j.travel_date)
+      .filter((j) => !!j && !!j.travel_date)
       .sort((a, b) => {
-        const aDate = a?.travel_date ? new Date(a.travel_date).getTime() : 0;
-        const bDate = b?.travel_date ? new Date(b.travel_date).getTime() : 0;
-        return bDate - aDate;
+        const aDate = a?.travel_date ? new Date(a.travel_date).getTime() : 0
+        const bDate = b?.travel_date ? new Date(b.travel_date).getTime() : 0
+        return bDate - aDate
       })
       .slice(0, 5)
   }, [journeys])
@@ -108,13 +120,19 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Welcome back, {selectedAccount.name.split(" ")[0]}</h1>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Welcome back, {selectedAccount.name.split(" ")[0]}
+        </h1>
         <p className="text-gray-600 mt-1">Here's your transport activity for this month</p>
       </div>
 
       {/* Error Banner */}
       {error && (
-        <ErrorBanner message={error} onRetry={() => window.location.reload()} onDismiss={() => setError(null)} />
+        <ErrorBanner
+          message={error}
+          onRetry={() => window.location.reload()}
+          onDismiss={() => setError(null)}
+        />
       )}
 
       {/* KPI Cards */}
@@ -179,13 +197,19 @@ export default function DashboardPage() {
                 <Badge variant="secondary" className="capitalize">
                   {journeys.length > 0
                     ? (() => {
-                        const modeCounts = journeys.reduce((acc, j) => {
-                          const mode = j?.mode?.id ?? "unknown";
-                          acc[mode] = (acc[mode] || 0) + 1;
-                          return acc;
-                        }, {} as Record<string, number>);
-                        const top = Object.entries(modeCounts).reduce((a, b) => (a[1] > b[1] ? a : b), ["—", 0]);
-                        return top[0];
+                        const modeCounts = journeys.reduce(
+                          (acc, j) => {
+                            const mode = j?.mode?.id ?? "unknown"
+                            acc[mode] = (acc[mode] || 0) + 1
+                            return acc
+                          },
+                          {} as Record<string, number>
+                        )
+                        const top = Object.entries(modeCounts).reduce(
+                          (a, b) => (a[1] > b[1] ? a : b),
+                          ["—", 0]
+                        )
+                        return top[0]
                       })()
                     : "—"}
                 </Badge>
@@ -193,9 +217,16 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Total distance</span>
                 <span className="text-sm">
-                  {Intl.NumberFormat("en-GB", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(
-                    journeys.reduce((sum, j) => sum + (typeof j?.distance_km === "number" ? j.distance_km : 0), 0)
-                  )}km
+                  {Intl.NumberFormat("en-GB", {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2,
+                  }).format(
+                    journeys.reduce(
+                      (sum, j) => sum + (typeof j?.distance_km === "number" ? j.distance_km : 0),
+                      0
+                    )
+                  )}
+                  km
                 </span>
               </div>
               <div className="flex items-center justify-between">

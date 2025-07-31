@@ -27,9 +27,10 @@ export function Stepper({ steps, currentStep, className }: StepperProps) {
                 <div
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-full border-2 text-sm font-medium",
-                    isCompleted && "border-openTransport-primary bg-openTransport-primary text-white",
+                    isCompleted &&
+                      "border-openTransport-primary bg-openTransport-primary text-white",
                     isCurrent && "border-openTransport-primary text-openTransport-primary",
-                    !isCompleted && !isCurrent && "border-gray-300 text-gray-500",
+                    !isCompleted && !isCurrent && "border-gray-300 text-gray-500"
                   )}
                 >
                   {isCompleted ? <Check className="h-4 w-4" /> : <span>{index + 1}</span>}
@@ -39,17 +40,22 @@ export function Stepper({ steps, currentStep, className }: StepperProps) {
                     className={cn(
                       "text-sm font-medium",
                       isCurrent && "text-openTransport-primary",
-                      !isCurrent && "text-gray-500",
+                      !isCurrent && "text-gray-500"
                     )}
                   >
                     {step.title}
                   </div>
-                  {step.description && <div className="text-xs text-gray-500 mt-1">{step.description}</div>}
+                  {step.description && (
+                    <div className="text-xs text-gray-500 mt-1">{step.description}</div>
+                  )}
                 </div>
               </div>
               {!isLast && (
                 <div
-                  className={cn("flex-1 h-0.5 mx-4 mt-4", isCompleted ? "bg-openTransport-primary" : "bg-gray-300")}
+                  className={cn(
+                    "flex-1 h-0.5 mx-4 mt-4",
+                    isCompleted ? "bg-openTransport-primary" : "bg-gray-300"
+                  )}
                 />
               )}
             </div>

@@ -50,7 +50,7 @@ export default function AccountsPage() {
     // Update provider status
     const updatedProviders = providers.map((p) =>
       p.id === providerId
-        ? { ...p, connected, status: connected ? "fetching" as const : "idle" as const }
+        ? { ...p, connected, status: connected ? ("fetching" as const) : ("idle" as const) }
         : p
     )
     setProviders(updatedProviders)
@@ -62,7 +62,9 @@ export default function AccountsPage() {
 
         // Update to complete status
         setProviders((prev) =>
-          prev.map((p) => (p.id === providerId ? { ...p, status: "complete", lastFetch: new Date() } : p)),
+          prev.map((p) =>
+            p.id === providerId ? { ...p, status: "complete", lastFetch: new Date() } : p
+          )
         )
 
         toast({
@@ -73,7 +75,9 @@ export default function AccountsPage() {
         console.error("Failed to connect provider:", error)
 
         // Update to error status but keep connected
-        setProviders((prev) => prev.map((p) => (p.id === providerId ? { ...p, status: "error" } : p)))
+        setProviders((prev) =>
+          prev.map((p) => (p.id === providerId ? { ...p, status: "error" } : p))
+        )
 
         toast({
           title: "Connection Warning",
@@ -84,7 +88,7 @@ export default function AccountsPage() {
     } else {
       // Disconnecting
       setProviders((prev) =>
-        prev.map((p) => (p.id === providerId ? { ...p, status: "idle", lastFetch: undefined } : p)),
+        prev.map((p) => (p.id === providerId ? { ...p, status: "idle", lastFetch: undefined } : p))
       )
 
       toast({
@@ -102,14 +106,18 @@ export default function AccountsPage() {
     if (connectedProviders.length === 0) return
 
     // Set all connected providers to fetching
-    setProviders((prev) => prev.map((p) => (p.connected ? { ...p, status: "fetching" as const } : p)))
+    setProviders((prev) =>
+      prev.map((p) => (p.connected ? { ...p, status: "fetching" as const } : p))
+    )
 
     try {
       // Simulate sync
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
       // Update all to complete
-      setProviders((prev) => prev.map((p) => (p.connected ? { ...p, status: "complete", lastFetch: new Date() } : p)))
+      setProviders((prev) =>
+        prev.map((p) => (p.connected ? { ...p, status: "complete", lastFetch: new Date() } : p))
+      )
 
       toast({
         title: "Sync Complete",
@@ -139,11 +147,15 @@ export default function AccountsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Connected Accounts</h1>
-        <p className="text-gray-600 mt-1">Manage your transport provider connections and data access</p>
+        <p className="text-gray-600 mt-1">
+          Manage your transport provider connections and data access
+        </p>
       </div>
 
       {/* Error Banner */}
-      {error && <ErrorBanner message={error} onRetry={handleSyncAll} onDismiss={() => setError(null)} />}
+      {error && (
+        <ErrorBanner message={error} onRetry={handleSyncAll} onDismiss={() => setError(null)} />
+      )}
 
       {/* Current User Info */}
       <Card>
@@ -171,12 +183,21 @@ export default function AccountsPage() {
                 <div className="mt-4">
                   <div className="bg-blue-50 border border-blue-200 rounded px-3 py-2 flex items-center gap-2">
                     <span className="text-xs text-blue-700 font-medium">Coming Soon:</span>
-                    <span className="text-xs text-gray-700">Personalise your carbon calculations by selecting your car.</span>
+                    <span className="text-xs text-gray-700">
+                      Personalise your carbon calculations by selecting your car.
+                    </span>
                   </div>
                   <div className="mt-2 flex items-center gap-2">
-                    <span className="text-xs text-gray-500">Assumed car for carbon calculations:</span>
+                    <span className="text-xs text-gray-500">
+                      Assumed car for carbon calculations:
+                    </span>
                     <Badge variant="secondary">Ford Fiesta</Badge>
-                    <Button variant="outline" size="sm" disabled className="opacity-60 pointer-events-none ml-2 font-semibold bg-muted border-muted text-muted-foreground">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled
+                      className="opacity-60 pointer-events-none ml-2 font-semibold bg-muted border-muted text-muted-foreground"
+                    >
                       Change Car (Coming Soon)
                     </Button>
                   </div>
@@ -193,7 +214,9 @@ export default function AccountsPage() {
       {/* Connected Providers */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Connected Providers ({connectedProviders.length})</h2>
+          <h2 className="text-xl font-semibold text-gray-900">
+            Connected Providers ({connectedProviders.length})
+          </h2>
           <div className="flex items-center space-x-2">
             <Badge variant="secondary" className="flex items-center space-x-1">
               <CheckCircle className="h-3 w-3" />
@@ -228,7 +251,8 @@ export default function AccountsPage() {
                 <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">No Connected Providers</h3>
                 <p className="text-gray-600 mb-6">
-                  Connect your transport providers to start importing journey data and viewing analytics.
+                  Connect your transport providers to start importing journey data and viewing
+                  analytics.
                 </p>
                 <Button
                   onClick={() => {
@@ -248,7 +272,9 @@ export default function AccountsPage() {
       {/* Available Providers */}
       <div id="available-providers">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Available Providers ({availableProviders.length})</h2>
+          <h2 className="text-xl font-semibold text-gray-900">
+            Available Providers ({availableProviders.length})
+          </h2>
           <Button variant="outline" size="sm">
             <Plus className="h-4 w-4 mr-2" />
             Request New Provider
@@ -266,7 +292,9 @@ export default function AccountsPage() {
             <CardContent className="py-8">
               <div className="text-center">
                 <CheckCircle className="h-12 w-12 text-openTransport-accent mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">All Providers Connected!</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  All Providers Connected!
+                </h3>
                 <p className="text-gray-600">You've connected all available transport providers.</p>
               </div>
             </CardContent>
@@ -298,7 +326,11 @@ export default function AccountsPage() {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Sync status</span>
-              <Badge variant={connectedProviders.some((p) => p.status === "error") ? "destructive" : "secondary"}>
+              <Badge
+                variant={
+                  connectedProviders.some((p) => p.status === "error") ? "destructive" : "secondary"
+                }
+              >
                 {connectedProviders.some((p) => p.status === "fetching")
                   ? "Syncing..."
                   : connectedProviders.some((p) => p.status === "error")

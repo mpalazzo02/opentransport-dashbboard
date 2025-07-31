@@ -30,7 +30,7 @@ export function StatCard({ title, value, change, trend, icon, className }: StatC
                 "mr-1 h-3 w-3",
                 trend === "up" && "text-openTransport-accent",
                 trend === "down" && "text-red-600",
-                trend === "neutral" && "text-gray-600",
+                trend === "neutral" && "text-gray-600"
               )}
             />
             {change}

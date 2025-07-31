@@ -11,14 +11,10 @@ export const metadata: Metadata = {
   title: "Open Transport - Your journeys, finally in one place",
   description:
     "Connect all your transport accounts and get a unified view of your travel data, spending, and environmental impact.",
-    generator: 'OpenTransport'
+  generator: "OpenTransport",
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>

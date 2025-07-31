@@ -1,9 +1,7 @@
 // Format snake_case or id to Capitalized Words
 export function formatOperatorName(str: string): string {
-  if (!str) return "Unknown";
-  return str
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  if (!str) return "Unknown"
+  return str.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
 }
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -14,7 +12,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number, currency = "GBP"): string {
-
   return new Intl.NumberFormat("en-GB", {
     style: "currency",
     currency,
@@ -69,14 +66,24 @@ export function getModeColor(mode: string): string {
   return colors[mode] || "bg-gray-100 text-gray-800"
 }
 
-export function calculateMonthlyStats(journeys: Journey[], purchases: Purchase[], targetMonth?: string): MonthlyStats {
+export function calculateMonthlyStats(
+  journeys: Journey[],
+  purchases: Purchase[],
+  targetMonth?: string
+): MonthlyStats {
   // Filter for target month if specified
   const filteredJourneys = targetMonth
-    ? journeys.filter((j) => typeof j?.travel_date === "string" && j.travel_date?.startsWith(targetMonth))
+    ? journeys.filter(
+        (j) => typeof j?.travel_date === "string" && j.travel_date?.startsWith(targetMonth)
+      )
     : journeys
 
   const filteredPurchases = targetMonth
-    ? purchases.filter((p) => typeof p?.transaction?.["date-time"] === "string" && p.transaction["date-time"]?.startsWith(targetMonth))
+    ? purchases.filter(
+        (p) =>
+          typeof p?.transaction?.["date-time"] === "string" &&
+          p.transaction["date-time"]?.startsWith(targetMonth)
+      )
     : purchases
 
   const totalSpend = filteredPurchases.reduce((sum, purchase) => {
@@ -90,12 +97,12 @@ export function calculateMonthlyStats(journeys: Journey[], purchases: Purchase[]
       acc[operatorName] = (acc[operatorName] || 0) + 1
       return acc
     },
-    {} as Record<string, number>,
+    {} as Record<string, number>
   )
 
   const topOperator = Object.keys(operatorCounts).reduce(
     (a, b) => (operatorCounts[a] > operatorCounts[b] ? a : b),
-    "None",
+    "None"
   )
 
   const totalCO2 = filteredJourneys.reduce((sum, journey) => {
@@ -126,7 +133,11 @@ export function getDateRanges(monthsBack = 2): Array<{ year: string; month: stri
   return ranges
 }
 
-export function exportToCSV(data: any[], filename: string, columns: Array<{ key: string; label: string }>) {
+export function exportToCSV(
+  data: any[],
+  filename: string,
+  columns: Array<{ key: string; label: string }>
+) {
   const headers = columns.map((col) => col.label).join(",")
   const rows = data.map((item) =>
     columns
@@ -134,7 +145,7 @@ export function exportToCSV(data: any[], filename: string, columns: Array<{ key:
         const value = getNestedValue(item, col.key)
         return typeof value === "string" && value.includes(",") ? `"${value}"` : value
       })
-      .join(","),
+      .join(",")
   )
 
   const csvContent = [headers, ...rows].join("\n")

@@ -1,58 +1,58 @@
 // API Models
 export type Journey = {
-  account_id: string;
-  id: string | number;
+  account_id: string
+  id: string | number
   mode: {
-    id: string;
-    "short-desc": string | null;
-    "long-desc": string | null;
-  };
+    id: string
+    "short-desc": string | null
+    "long-desc": string | null
+  }
   operator: {
-    id: string;
-    name: string;
-  };
+    id: string
+    name: string
+  }
   "travel-from": {
     location: {
       "lat-long": {
-        latitude: number | null;
-        longitude: number | null;
-      };
-      NaPTAN: string | null;
-    };
-    "date-time": string | null;
-    reference: string | null;
-  };
+        latitude: number | null
+        longitude: number | null
+      }
+      NaPTAN: string | null
+    }
+    "date-time": string | null
+    reference: string | null
+  }
   "travel-to": {
     location: {
       "lat-long": {
-        latitude: number | null;
-        longitude: number | null;
-      };
-      NaPTAN: string | null;
-    };
-    "date-time": string | null;
-    reference: string | null;
-  };
+        latitude: number | null
+        longitude: number | null
+      }
+      NaPTAN: string | null
+    }
+    "date-time": string | null
+    reference: string | null
+  }
   ticket: {
-    "number-usages": number | null;
-    reference: string | null;
-    "reference-type": string | null;
-    medium: string | null;
-    code1: string | null;
-    code2: string | null;
-    code3: string | null;
-  };
+    "number-usages": number | null
+    reference: string | null
+    "reference-type": string | null
+    medium: string | null
+    code1: string | null
+    code2: string | null
+    code3: string | null
+  }
   price: {
-    amount: number | null;
-    currency: string | null;
-  };
-  "route-via-avoid": string | null;
-  "pre-paid": string | null;
-  services: any[];
-  distance_km: number | "unknown" | null;
-  co2_g: number | "unknown" | null;
-  polyline: string | null;
-  travel_date: string;
+    amount: number | null
+    currency: string | null
+  }
+  "route-via-avoid": string | null
+  "pre-paid": string | null
+  services: any[]
+  distance_km: number | "unknown" | null
+  co2_g: number | "unknown" | null
+  polyline: string | null
+  travel_date: string
 }
 
 export type Purchase = {

@@ -18,8 +18,21 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -79,7 +92,10 @@ export default function TransactionsPage() {
         setError(null)
 
         // Hardcode to fetch all months of 2023 for demo data
-        const dateRanges = Array.from({ length: 12 }, (_, i) => ({ year: '2023', month: String(i + 1).padStart(2, '0') }))
+        const dateRanges = Array.from({ length: 12 }, (_, i) => ({
+          year: "2023",
+          month: String(i + 1).padStart(2, "0"),
+        }))
         const { purchases: purchaseData } = await fetchMultipleMonths(currentAccount, dateRanges)
         setPurchases(purchaseData)
       } catch (err) {
@@ -114,15 +130,21 @@ export default function TransactionsPage() {
       {
         accessorKey: "transaction.date-time",
         header: ({ column }) => (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
             Date/Time
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         ),
         cell: ({ row }) => {
-          const transaction = row.original.transaction;
-          const dateTime = transaction && typeof transaction["date-time"] === "string" ? transaction["date-time"] : null;
-          return dateTime ? formatDateTime(dateTime) : "—";
+          const transaction = row.original.transaction
+          const dateTime =
+            transaction && typeof transaction["date-time"] === "string"
+              ? transaction["date-time"]
+              : null
+          return dateTime ? formatDateTime(dateTime) : "—"
         },
       },
       {
@@ -155,7 +177,10 @@ export default function TransactionsPage() {
       {
         accessorKey: "transaction.price.amount",
         header: ({ column }) => (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
             Amount
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
@@ -173,7 +198,9 @@ export default function TransactionsPage() {
         accessorKey: "id",
         header: "Transaction ID",
         cell: ({ row }) => (
-          <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">{row.getValue("id")}</code>
+          <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">
+            {row.getValue("id")}
+          </code>
         ),
       },
       {
@@ -193,7 +220,7 @@ export default function TransactionsPage() {
         ),
       },
     ],
-    [],
+    []
   )
 
   const table = useReactTable({
@@ -250,7 +277,11 @@ export default function TransactionsPage() {
 
       {/* Error Banner */}
       {error && (
-        <ErrorBanner message={error} onRetry={() => window.location.reload()} onDismiss={() => setError(null)} />
+        <ErrorBanner
+          message={error}
+          onRetry={() => window.location.reload()}
+          onDismiss={() => setError(null)}
+        />
       )}
 
       <Card>
@@ -268,7 +299,9 @@ export default function TransactionsPage() {
               <Input
                 placeholder="Search operator..."
                 value={(table.getColumn("operator")?.getFilterValue() as string) ?? ""}
-                onChange={(event) => table.getColumn("operator")?.setFilterValue(event.target.value)}
+                onChange={(event) =>
+                  table.getColumn("operator")?.setFilterValue(event.target.value)
+                }
                 className="pl-8"
               />
             </div>
@@ -326,7 +359,9 @@ export default function TransactionsPage() {
                       onClick={() => handleRowClick(row.original)}
                     >
                       {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                        <TableCell key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
                       ))}
                     </TableRow>
                   ))
@@ -344,8 +379,8 @@ export default function TransactionsPage() {
           {/* Pagination */}
           <div className="flex items-center justify-end space-x-2 py-4">
             <div className="flex-1 text-sm text-muted-foreground">
-              {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-              selected.
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
             </div>
             <div className="space-x-2">
               <Button
@@ -356,7 +391,12 @@ export default function TransactionsPage() {
               >
                 Previous
               </Button>
-              <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
                 Next
               </Button>
             </div>
@@ -377,7 +417,8 @@ export default function TransactionsPage() {
                 <div>
                   <label className="text-sm font-medium text-gray-500">Transaction Date</label>
                   <p className="text-sm mt-1">
-                    {selectedPurchase.transaction && typeof selectedPurchase.transaction["date-time"] === "string"
+                    {selectedPurchase.transaction &&
+                    typeof selectedPurchase.transaction["date-time"] === "string"
                       ? formatDateTime(selectedPurchase.transaction["date-time"])
                       : "—"}
                   </p>
@@ -415,7 +456,9 @@ export default function TransactionsPage() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Currency</label>
-                  <p className="text-sm mt-1">{selectedPurchase.transaction?.price?.currency || "GBP"}</p>
+                  <p className="text-sm mt-1">
+                    {selectedPurchase.transaction?.price?.currency || "GBP"}
+                  </p>
                 </div>
                 <div className="col-span-2">
                   <label className="text-sm font-medium text-gray-500">Transaction ID</label>

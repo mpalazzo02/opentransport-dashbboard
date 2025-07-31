@@ -13,7 +13,13 @@ interface ErrorBannerProps {
   className?: string
 }
 
-export function ErrorBanner({ title = "Error", message, onRetry, onDismiss, className }: ErrorBannerProps) {
+export function ErrorBanner({
+  title = "Error",
+  message,
+  onRetry,
+  onDismiss,
+  className,
+}: ErrorBannerProps) {
   return (
     <Alert variant="destructive" className={cn("", className)}>
       <AlertCircle className="h-4 w-4" />

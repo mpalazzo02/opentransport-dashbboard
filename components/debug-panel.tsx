@@ -42,7 +42,9 @@ export function DebugPanel({ data = {}, className }: DebugPanelProps) {
           <Button variant="outline" size="sm" className="bg-background shadow-lg">
             <Bug className="h-4 w-4 mr-2" />
             Debug Panel
-            <ChevronDown className={cn("h-4 w-4 ml-2 transition-transform", isOpen && "rotate-180")} />
+            <ChevronDown
+              className={cn("h-4 w-4 ml-2 transition-transform", isOpen && "rotate-180")}
+            />
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent>
@@ -52,7 +54,9 @@ export function DebugPanel({ data = {}, className }: DebugPanelProps) {
                 <Bug className="h-4 w-4 mr-2" />
                 Debug Information
               </CardTitle>
-              <CardDescription className="text-xs">Development mode only - hidden in production</CardDescription>
+              <CardDescription className="text-xs">
+                Development mode only - hidden in production
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Tab Navigation */}
@@ -84,7 +88,9 @@ export function DebugPanel({ data = {}, className }: DebugPanelProps) {
                   </div>
                   <div className="flex justify-between text-xs">
                     <span>Connected Providers:</span>
-                    <Badge variant="secondary">{data.providers?.filter((p: any) => p.connected).length || 0}</Badge>
+                    <Badge variant="secondary">
+                      {data.providers?.filter((p: any) => p.connected).length || 0}
+                    </Badge>
                   </div>
                   <div className="flex justify-between text-xs">
                     <span>Account ID:</span>

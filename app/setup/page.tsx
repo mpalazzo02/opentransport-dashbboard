@@ -44,7 +44,9 @@ export default function SetupPage() {
 
     // Update provider status to fetching
     setProviders((prev) =>
-      prev.map((p) => (p.id === providerId ? { ...p, connected, status: connected ? "fetching" : "idle" } : p)),
+      prev.map((p) =>
+        p.id === providerId ? { ...p, connected, status: connected ? "fetching" : "idle" } : p
+      )
     )
 
     if (connected) {
@@ -55,7 +57,9 @@ export default function SetupPage() {
 
         // Update provider status to complete
         setProviders((prev) =>
-          prev.map((p) => (p.id === providerId ? { ...p, status: "complete", lastFetch: new Date() } : p)),
+          prev.map((p) =>
+            p.id === providerId ? { ...p, status: "complete", lastFetch: new Date() } : p
+          )
         )
 
         toast({
@@ -66,7 +70,9 @@ export default function SetupPage() {
         console.error("Failed to fetch data:", error)
 
         // Update provider status to error but keep connected
-        setProviders((prev) => prev.map((p) => (p.id === providerId ? { ...p, status: "error" } : p)))
+        setProviders((prev) =>
+          prev.map((p) => (p.id === providerId ? { ...p, status: "error" } : p))
+        )
 
         toast({
           title: "Import Warning",
@@ -77,7 +83,7 @@ export default function SetupPage() {
     } else {
       // Disconnecting - reset status
       setProviders((prev) =>
-        prev.map((p) => (p.id === providerId ? { ...p, status: "idle", lastFetch: undefined } : p)),
+        prev.map((p) => (p.id === providerId ? { ...p, status: "idle", lastFetch: undefined } : p))
       )
     }
 
@@ -115,7 +121,9 @@ export default function SetupPage() {
           <CardContent className="text-center py-12">
             <CheckCircle className="h-16 w-16 text-openTransport-accent mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Setup Complete!</h3>
-            <p className="text-gray-600 mb-4">Your transport data has been imported. Redirecting to dashboard...</p>
+            <p className="text-gray-600 mb-4">
+              Your transport data has been imported. Redirecting to dashboard...
+            </p>
             <div className="flex justify-center">
               <Loader2 className="h-5 w-5 animate-spin" />
             </div>
@@ -141,26 +149,33 @@ export default function SetupPage() {
               </Link>
               <h1 className="text-3xl font-bold text-gray-900">Connect Your Providers</h1>
               <p className="text-gray-600 mt-1">
-                Welcome, <span className="font-medium">{selectedAccount.name}</span>. Choose which transport providers
-                to connect.
+                Welcome, <span className="font-medium">{selectedAccount.name}</span>. Choose which
+                transport providers to connect.
               </p>
             </div>
           </div>
 
           {/* Error Banner */}
-          {error && <ErrorBanner message={error} onDismiss={() => setError(null)} className="mb-6" />}
+          {error && (
+            <ErrorBanner message={error} onDismiss={() => setError(null)} className="mb-6" />
+          )}
 
           {/* Main Content */}
           <Card>
             <CardHeader>
               <CardTitle>Transport Providers</CardTitle>
               <CardDescription>
-                Select providers to import your journey data. Data will be fetched immediately upon connection.
+                Select providers to import your journey data. Data will be fetched immediately upon
+                connection.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {providers.map((provider) => (
-                <ProviderCard key={provider.id} provider={provider} onToggle={handleProviderToggle} />
+                <ProviderCard
+                  key={provider.id}
+                  provider={provider}
+                  onToggle={handleProviderToggle}
+                />
               ))}
 
               {/* Status Summary */}
@@ -169,7 +184,8 @@ export default function SetupPage() {
                   <div>
                     <h4 className="font-medium text-gray-900">Connection Status</h4>
                     <p className="text-sm text-gray-600">
-                      {connectedProviders.length} provider{connectedProviders.length !== 1 ? "s" : ""} connected
+                      {connectedProviders.length} provider
+                      {connectedProviders.length !== 1 ? "s" : ""} connected
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -192,7 +208,10 @@ export default function SetupPage() {
                 </div>
                 <Button
                   onClick={handleContinue}
-                  disabled={!hasConnectedProviders || connectedProviders.some((p) => p.status === "fetching")}
+                  disabled={
+                    !hasConnectedProviders ||
+                    connectedProviders.some((p) => p.status === "fetching")
+                  }
                   className="min-w-[120px]"
                 >
                   {connectedProviders.some((p) => p.status === "fetching") ? (

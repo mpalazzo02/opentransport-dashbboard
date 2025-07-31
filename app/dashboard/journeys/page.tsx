@@ -18,8 +18,21 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -32,7 +45,15 @@ import { ErrorBanner } from "@/components/error-banner"
 import { fetchMultipleMonths } from "@/lib/api-client"
 import { loadCurrentAccount } from "@/lib/storage"
 import type { Journey } from "@/lib/types"
-import { formatDate, getModeIcon, getModeColor, capitalizeFirst, getDateRanges, exportToCSV, formatOperatorName } from "@/lib/utils"
+import {
+  formatDate,
+  getModeIcon,
+  getModeColor,
+  capitalizeFirst,
+  getDateRanges,
+  exportToCSV,
+  formatOperatorName,
+} from "@/lib/utils"
 import { DEMO_ACCOUNTS } from "@/lib/demo-data"
 import { ArrowUpDown, Download, Eye, Search, ChevronDown, HelpCircle } from "lucide-react"
 
@@ -100,152 +121,164 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
     ])
   }
 
-  const columns: ColumnDef<Journey>[] = useMemo(() => [
-    {
-      accessorKey: "travel_date",
-      header: ({ column }) => (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => {
-        const date = row.getValue("travel_date");
-        return typeof date === "string" ? formatDate(date) : "—";
+  const columns: ColumnDef<Journey>[] = useMemo(
+    () => [
+      {
+        accessorKey: "travel_date",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Date
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        ),
+        cell: ({ row }) => {
+          const date = row.getValue("travel_date")
+          return typeof date === "string" ? formatDate(date) : "—"
+        },
       },
-    },
-    {
-      id: "mode",
-      header: "Mode",
-      cell: ({ row }) => {
-        const journey = row.original;
-        const mode = journey.mode?.id ?? "unknown";
-        return (
-          <div className="flex items-center space-x-2">
-            <span>{getModeIcon(mode)}</span>
-            <Badge className={getModeColor(mode)}>{capitalizeFirst(mode)}</Badge>
-          </div>
-        );
+      {
+        id: "mode",
+        header: "Mode",
+        cell: ({ row }) => {
+          const journey = row.original
+          const mode = journey.mode?.id ?? "unknown"
+          return (
+            <div className="flex items-center space-x-2">
+              <span>{getModeIcon(mode)}</span>
+              <Badge className={getModeColor(mode)}>{capitalizeFirst(mode)}</Badge>
+            </div>
+          )
+        },
+        filterFn: (row, id, value) => {
+          const journey = row.original
+          return value.includes(journey.mode?.id ?? "unknown")
+        },
       },
-      filterFn: (row, id, value) => {
-        const journey = row.original;
-        return value.includes(journey.mode?.id ?? "unknown");
-      },
-    },
-    {
-      id: "operator",
-      header: "Operator",
-      cell: ({ row }) => {
-        const journey = row.original;
-        const operatorName = journey.operator?.name || journey.operator?.id || "Unknown";
-        return (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Badge
-                  variant="outline"
-                  className="text-xs max-w-[140px] truncate inline-block align-middle cursor-pointer"
-                  style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-                  title={operatorName}
-                >
-                  {formatOperatorName(operatorName)}
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent>
-                {operatorName}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        );
-      },
-    },
-    {
-      accessorKey: "distance_km",
-      header: ({ column }) => (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Distance (km)
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => {
-        const distance = row.getValue("distance_km");
-        if (distance === "unknown" || distance == null) {
+      {
+        id: "operator",
+        header: "Operator",
+        cell: ({ row }) => {
+          const journey = row.original
+          const operatorName = journey.operator?.name || journey.operator?.id || "Unknown"
           return (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <span className="flex items-center text-gray-400">
-                    — <HelpCircle className="h-3 w-3 ml-1" />
-                  </span>
+                  <Badge
+                    variant="outline"
+                    className="text-xs max-w-[140px] truncate inline-block align-middle cursor-pointer"
+                    style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+                    title={operatorName}
+                  >
+                    {formatOperatorName(operatorName)}
+                  </Badge>
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p>Data not available from provider</p>
-                </TooltipContent>
+                <TooltipContent>{operatorName}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          );
-        }
-        const num = Number(distance);
-        return `${!isNaN(num) ? num.toFixed(2) : distance} km`;
+          )
+        },
       },
-    },
-    {
-      accessorKey: "co2_g",
-      header: ({ column }) => (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          CO₂ (g)
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => {
-        const co2 = row.getValue("co2_g");
-        if (co2 === "unknown" || co2 == null) {
-          return (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="flex items-center text-gray-400">
-                    — <HelpCircle className="h-3 w-3 ml-1" />
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Data not available from provider</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          );
-        }
-        const num = Number(co2);
-        return `${!isNaN(num) ? num.toFixed(2) : co2} g`;
+      {
+        accessorKey: "distance_km",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Distance (km)
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        ),
+        cell: ({ row }) => {
+          const distance = row.getValue("distance_km")
+          if (distance === "unknown" || distance == null) {
+            return (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="flex items-center text-gray-400">
+                      — <HelpCircle className="h-3 w-3 ml-1" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Data not available from provider</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )
+          }
+          const num = Number(distance)
+          return `${!isNaN(num) ? num.toFixed(2) : distance} km`
+        },
       },
-    },
-    {
-      accessorKey: "id",
-      header: "Journey ID",
-      cell: ({ row }) => {
-        const id = row.getValue("id");
-        return id != null ? (
-          <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">{String(id)}</code>
-        ) : "—";
+      {
+        accessorKey: "co2_g",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            CO₂ (g)
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        ),
+        cell: ({ row }) => {
+          const co2 = row.getValue("co2_g")
+          if (co2 === "unknown" || co2 == null) {
+            return (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="flex items-center text-gray-400">
+                      — <HelpCircle className="h-3 w-3 ml-1" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Data not available from provider</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )
+          }
+          const num = Number(co2)
+          return `${!isNaN(num) ? num.toFixed(2) : co2} g`
+        },
       },
-    },
-    {
-      id: "actions",
-      cell: ({ row }) => (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleRowClick(row.original);
-          }}
-          aria-label="View journey details"
-        >
-          <Eye className="h-4 w-4" />
-        </Button>
-      ),
-    },
-  ], [purchases])
+      {
+        accessorKey: "id",
+        header: "Journey ID",
+        cell: ({ row }) => {
+          const id = row.getValue("id")
+          return id != null ? (
+            <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono">{String(id)}</code>
+          ) : (
+            "—"
+          )
+        },
+      },
+      {
+        id: "actions",
+        cell: ({ row }) => (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleRowClick(row.original)
+            }}
+            aria-label="View journey details"
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
+        ),
+      },
+    ],
+    [purchases]
+  )
   const table = useReactTable({
     columns,
     data: journeys,
@@ -300,7 +333,11 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
 
       {/* Error Banner */}
       {error && (
-        <ErrorBanner message={error} onRetry={() => window.location.reload()} onDismiss={() => setError(null)} />
+        <ErrorBanner
+          message={error}
+          onRetry={() => window.location.reload()}
+          onDismiss={() => setError(null)}
+        />
       )}
 
       <Card>
@@ -376,7 +413,9 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
                       onClick={() => handleRowClick(row.original)}
                     >
                       {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                        <TableCell key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
                       ))}
                     </TableRow>
                   ))
@@ -394,8 +433,8 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
           {/* Pagination */}
           <div className="flex items-center justify-end space-x-2 py-4">
             <div className="flex-1 text-sm text-muted-foreground">
-              {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-              selected.
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
             </div>
             <div className="space-x-2">
               <Button
@@ -406,7 +445,12 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
               >
                 Previous
               </Button>
-              <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
                 Next
               </Button>
             </div>
@@ -426,7 +470,11 @@ export default function JourneysPage({ purchases }: { purchases: any[] }) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Date</label>
-                  <p className="text-sm mt-1">{typeof selectedJourney.travel_date === "string" ? formatDate(selectedJourney.travel_date) : "—"}</p>
+                  <p className="text-sm mt-1">
+                    {typeof selectedJourney.travel_date === "string"
+                      ? formatDate(selectedJourney.travel_date)
+                      : "—"}
+                  </p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Mode</label>
