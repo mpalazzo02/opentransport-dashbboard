@@ -24,11 +24,13 @@ A proof-of-concept web application that provides a unified view of transport jou
 ## 🏃‍♂️ Getting Started
 
 1. **Install dependencies**:
+
    ```bash
    pnpm install
    ```
 
 2. **Run the development server**:
+
    ```bash
    pnpm dev
    ```
@@ -63,13 +65,96 @@ lib/
 └── utils.ts                        # Utility functions
 ```
 
+## 🌐 API Overview
+
+This project integrates with a private AWS API Gateway backend for live journey and purchase data. The API is not public; an API key is required for all requests.
+
+### API Base URL
+
+```
+https://4pvoe7tuw9.execute-api.eu-west-2.amazonaws.com/dev
+```
+
+### Authentication
+
+All requests must include an `x-api-key` header. The API key is not public. If you need access, please contact the maintainer.
+
+**Example header:**
+
+```
+x-api-key: <your-api-key>
+```
+
+### Endpoints
+
+- **GET `/journeys`**: Fetch journeys for an account and month
+  - **Query params:** `account_id`, `year`, `month`
+  - **Example:** `/journeys?account_id=cd89d17b-44be-4e2a-8e2d-1a2b3c4d5e6f&year=2023&month=12`
+  - **Response:** Array of journey objects (see schema below)
+
+- **GET `/purchases`**: Fetch purchases for an account and month
+  - **Query params:** `account_id`, `year`, `month`
+  - **Example:** `/purchases?account_id=cd89d17b-44be-4e2a-8e2d-1a2b3c4d5e6f&year=2023&month=12`
+  - **Response:** Array of purchase objects (see schema below)
+
+#### Request Example
+
+```
+GET /journeys?account_id=cd89d17b-44be-4e2a-8e2d-1a2b3c4d5e6f&year=2023&month=12
+Host: 4pvoe7tuw9.execute-api.eu-west-2.amazonaws.com
+x-api-key: <your-api-key>
+```
+
+#### Journey Response Schema (partial)
+
+```
+{
+  "account_id": "string",
+  "id": "string",
+  "mode": { "id": "string", "short-desc": "string", ... },
+  "operator": { "id": "string", "name": "string" },
+  "travel-from": { ... },
+  "travel-to": { ... },
+  "ticket": { ... },
+  ...
+}
+```
+
+#### Purchase Response Schema (partial)
+
+```
+{
+  "account_id": "string",
+  "id": "string",
+  "amount": 0,
+  "currency": "string",
+  "date": "string",
+  ...
+}
+```
+
+See `/lib/types.ts` for full TypeScript types.
+
+### API Key & Security
+
+- The API key is required for all requests. Do not share it publicly.
+- If you need access, request an API key from the maintainer.
+- The `.env.local` file should contain:
+  - `NEXT_PUBLIC_API_BASE_URL`
+  - `API_GATEWAY_KEY`
+
+### Deployment
+
+The app will be deployed on AWS Amplify, but you can run it locally with the dev API endpoint and your API key.
+
+---
 
 ## 👥 Demo Accounts
 
 The application includes four demo accounts with specific UUIDs:
 
 1. **Alex Thompson** - `cd89d17b-44be-4e2a-8e2d-1a2b3c4d5e6f`
-2. **Maria Rossi**   - `a1b2c3d4-e5f6-7890-abcd-1234567890ef`
+2. **Maria Rossi** - `a1b2c3d4-e5f6-7890-abcd-1234567890ef`
 3. **Sophie Dubois** - `b2c3d4e5-f6a1-2345-bcde-2345678901fa`
 4. **Liam O'Connor** - `c3d4e5f6-a1b2-3456-cdef-3456789012ab`
 
@@ -80,11 +165,13 @@ Use these to explore the dashboard in demo mode.
 This project uses ESLint (with Flat Config) and Prettier for code quality and consistency.
 
 **Lint your code:**
+
 ```bash
 pnpm lint
 ```
 
 **Format your code:**
+
 ```bash
 pnpm format
 ```
