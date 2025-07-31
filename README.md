@@ -153,10 +153,10 @@ The app will be deployed on AWS Amplify, but you can run it locally with the dev
 
 The application includes four demo accounts with specific UUIDs:
 
-1. **Alex Thompson** - `cd89d17b-44be-4e2a-8e2d-1a2b3c4d5e6f`
-2. **Maria Rossi** - `a1b2c3d4-e5f6-7890-abcd-1234567890ef`
-3. **Sophie Dubois** - `b2c3d4e5-f6a1-2345-bcde-2345678901fa`
-4. **Liam O'Connor** - `c3d4e5f6-a1b2-3456-cdef-3456789012ab`
+1. **Alex Thompson** - `cd89d17b-44be-4da6-9f54-d025373e163f`
+2. **Farah Khan**    - `66ca7e6b-3972-418e-94c1-08bc93fa1d2`
+3. **Gina Rosetti**  - `62482e11-3c8e-4ee0-87cf-65cfa26eebf8`
+4. **Jordan Chen**   - `23638779-4dc5-4fa9-a63f-d41d4b15e134`
 
 Use these to explore the dashboard in demo mode.
 
